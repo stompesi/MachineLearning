@@ -17,7 +17,7 @@ def plotNode(nodeTxt, centerPt, parentPt, nodeType):
                           arrowprops=arrow_args)
 
 def createPlot():
-  fig = plt.figure(1, facecolor='white')
+  flg = plt.figure(1, facecolor='white')
   flg.clf()
   # 플롯
   createPlot.ax1 = plt.subplot(111, frameon=False)
@@ -64,6 +64,7 @@ def plotMidText(cntrPt, parentPt, txtString):
   yMid = (parentPt[1] - cntrPt[1]) / 2.0 + cntrPt[1]
   createPlot.ax1.text(xMid, yMid, txtString)
 
+# 넓이와 높이 구하기
 def plotTree(myTree, parentPt, nodeTxt):
   numLeafs = getNumLeafs(myTree)
   getTreeDepth(myTree)
@@ -79,20 +80,20 @@ def plotTree(myTree, parentPt, nodeTxt):
     else:
       plotTree.xOff = plotTree.xOff + 1.0 / plotTree.totalW
       plotNode(secondDict[key], (plotTree.xOff, plotTree.yOff), cntrPt, leafNode)
-      plotMidText((plotTree.xOffm plotTree.yOff), cntrPt, str(key))
+      plotMidText((plotTree.xOff, plotTree.yOff), cntrPt, str(key))
   plotTree.yOff = plotTree.yOff + 1.0 / plotTree.totalD
 
-def createPlot(inTree):
-  fig = plt.figure(1, facecolor='white')
-  fig.clf()
-  axprops = dict(xticks=[], yticks=[])
-  createPlot.ax1 = plt.subplot(111, frameon=False, **axprops)
-  plotTree.totalW = float(getNumLeafs(inTree))
-  plotTree.totalD = float(getTreeDepth(inTree))
-  plotTree.xOff = -0.5 / plotTree.totalW
-  plotTree.yOff = 1.0
-  plotTree(inTree, (0.5, 1.0), '')
-  plt.show()
+# def createPlot(inTree):
+#   fig = plt.figure(1, facecolor='white')
+#   fig.clf()
+#   axprops = dict(xticks=[], yticks=[])
+#   createPlot.ax1 = plt.subplot(111, frameon=False, **axprops)
+#   plotTree.totalW = float(getNumLeafs(inTree))
+#   plotTree.totalD = float(getTreeDepth(inTree))
+#   plotTree.xOff = -0.5 / plotTree.totalW
+#   plotTree.yOff = 1.0
+#   plotTree(inTree, (0.5, 1.0), '')
+#   plt.show()
 
 
 
