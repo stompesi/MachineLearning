@@ -7,7 +7,7 @@ def loadDataSet(fileName):
   fr = open(fileName)
   for line in fr.readlines():
     curLine = line.strip().split('\t')
-    # 모든 값을 float() 처리 
+    # 모든 값을 float() 처리
     fltLine = map(float, curLine)
     dataMat.append(fltLine)
 
@@ -22,9 +22,9 @@ def binSplitDataSet(dataSet, feature, value):
 
 # 단말 노드에 대한 모델을 생성한다
 # chooseBestSplit()이 더이상 데이터를 분할해서는 안된다고 결정했을때
-# 이 노드에 대한 모델(목적 변수에 대한 평균값)을 구하기 위해 호출된다. 
+# 이 노드에 대한 모델(목적 변수에 대한 평균값)을 구하기 위해 호출된다.
 def regLeaf(dataSet):
-  # mean: 평균 
+  # mean: 평균
   # [: , -1]: 마지막 열의 모든 행 값
   return mean(dataSet[:, -1])
 
@@ -35,18 +35,18 @@ def regErr(dataSet):
   # shape: 면적 구하는 함수 - reutrn: (행, 열)
   return var(dataSet[:, -1]) * shape(dataSet)[0]
 
-# 분류 트리를 구축하는 함수 
-# 데이터를 이진 분할하는 가장 좋은 방법을 찾는 것 
+# 분류 트리를 구축하는 함수
+# 데이터를 이진 분할하는 가장 좋은 방법을 찾는 것
 # 좋은 이진 분할을 찾을 수 없다면 -> None을 반환하고 단말 노드를 생성한다.
 # 좋은 분할을 찾게 된다면 -> 이 속성의 번화와 분할을 위한 값을 반환한다.
 
-# ops = 새로운 분할이 그만 생성되어야 하는 때를 함수에게 알린다. 
+# ops = 새로운 분할이 그만 생성되어야 하는 때를 함수에게 알린다.
 def chooseBestSplit(dataSet, leafType=regLeaf, errType=regErr, ops=(1, 4)):
   tolS = ops[0] # 오류를 줄이기 위해 사용되는 오차 범위
   tolN = ops[1] # 분할에 포함되는 데이터 사례의 최소 개수
 
   # 모든 값이 동일하면 종료
-  # .T: 행에 값을 matrix의 하나의 행의 배열로 변경 
+  # .T: 행에 값을 matrix의 하나의 행의 배열로 변경
   # .tolist(): matrix를 배열로 변경
   if len(set(dataSet[:, -1].T.tolist()[0])) == 1:
     return None, leafType(dataSet)
@@ -62,7 +62,7 @@ def chooseBestSplit(dataSet, leafType=regLeaf, errType=regErr, ops=(1, 4)):
   bestIndex = 0
   bestValue = 0
 
-  # 가장 좋은 분할을 찾는다 
+  # 가장 좋은 분할을 찾는다
   for featIndex in range(n - 1):
     # 오류가 난다면 set(dataSet[:, -1].T.tolist()[0])로 변경 하기
     for splitVal in set(dataSet[:, featIndex]):
@@ -123,7 +123,7 @@ def getMean(tree):
 # testData: 트리를 가지치기하는 데 필요한 데이터
 
 def prune(tree, testData):
-  # 검사데이터가 비어있는지 확인 
+  # 검사데이터가 비어있는지 확인
   if shape(testData)[0] == 0:
     return getMean(tree)
 
@@ -131,17 +131,17 @@ def prune(tree, testData):
   if (isTree(tree['right']) or isTree(tree['left'])):
     lSet, rSet = binSplitDataSet(testData, tree['spInd'], tree['spVal'])
 
-  # 트리인지 아닌지 확인하기 위한 검사 트리면 가지치기를 재귀적으로 호출  
+  # 트리인지 아닌지 확인하기 위한 검사 트리면 가지치기를 재귀적으로 호출
   if isTree(tree['left']):
     tree['left'] = prune(tree['left'], lSet)
   if isTree(tree['right']):
     tree['right'] = prune(tree['right'], rSet)
 
-  # 트리가 존재하는지를 확인하기 위한 검사 
+  # 트리가 존재하는지를 확인하기 위한 검사
   # 모두 트리가 아니라면 이 가지들은 병합하는 것이 가능하다.
 
   if not isTree(tree['left']) and not isTree(tree['right']):
-    # 데이터를 분할하고 오류를 측정한다 
+    # 데이터를 분할하고 오류를 측정한다
     lSet, rSet = binSplitDataSet(testData, tree['spInd'], tree['spVal'])
     errorNoMerge = sum(power(lSet[:, -1] - tree['left'], 2))
 
@@ -161,7 +161,7 @@ def prune(tree, testData):
 # 역행렬을 확인할 수 없다는 예외가 발생한다.
 def linearSolve(dataSet):
   m, n = shape(dataSet)
-  # ones((m, n): m x n 배열 만드는 함수 
+  # ones((m, n): m x n 배열 만드는 함수
   X = mat(ones((m, n)))
   Y = mat(ones((m, 1)))
 
@@ -178,7 +178,7 @@ def linearSolve(dataSet):
 # regLeaf와 유사하다.
 # ws: 회귀 계수
 def modelLeaf(dataSet):
-  ws, X, Y = linearSolve(dataSet) 
+  ws, X, Y = linearSolve(dataSet)
   return ws
 
 # 주어진 데이터 집합에 대한 오류를 계산한다.
