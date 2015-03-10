@@ -6,11 +6,10 @@ def loadDataSet(fileName):
   dataMat = []
   fr = open(fileName)
   for line in fr.readlines():
-    curLine = line.strip().split('\t')
-    # 모든 값을 float() 처리
-    fltLine = map(float, curLine)
-    dataMat.append(fltLine)
-
+      curLine = line.strip().split('\t')
+      # 모든 값을 float() 처리
+      fltLine = map(float,curLine)
+      dataMat.append(fltLine)
   return dataMat
 
 def binSplitDataSet(dataSet, feature, value):
